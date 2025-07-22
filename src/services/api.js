@@ -1,12 +1,17 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+// Updated to use your Render backend URL
+const API_BASE_URL = process.env.REACT_APP_API_URL || 
+  (process.env.NODE_ENV === 'production' 
+    ? 'https://sms-backend-wiod.onrender.com/api'
+    : 'http://localhost:5000/api');
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 10000, // 10 second timeout for better UX with Render cold starts
 });
 
 // Request interceptor for adding auth token (if needed in future)
@@ -17,6 +22,7 @@ api.interceptors.request.use(
     // if (token) {
     //   config.headers.Authorization = `Bearer ${token}`;
     // }
+    console.log(`Making API request to: ${config.baseURL}${config.url}`);
     return config;
   },
   (error) => {
@@ -26,13 +32,24 @@ api.interceptors.request.use(
 
 // Response interceptor for handling errors
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log('API response received:', response.status);
+    return response;
+  },
   (error) => {
+    console.error('API Error:', error.message);
+    
     if (error.response?.status === 401) {
       // Handle unauthorized access
       // localStorage.removeItem('token');
       // window.location.href = '/login';
     }
+    
+    // Handle network errors or timeout
+    if (error.code === 'ECONNABORTED') {
+      console.error('Request timeout - Render service might be cold starting');
+    }
+    
     return Promise.reject(error);
   }
 );
@@ -69,6 +86,11 @@ const studentAPI = {
     return api.post(`/students/${id}/generate-admission-form`, {}, {
       responseType: 'blob', // Important for handling binary data
     });
+  },
+
+  // Health check endpoint (useful for Render cold starts)
+  healthCheck: () => {
+    return api.get('/health');
   },
 };
 
