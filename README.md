@@ -1,70 +1,285 @@
-# Getting Started with Create React App
+# Student Management System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A comprehensive web-based application for managing student records, courses, grades, and academic information. This system provides an intuitive interface for administrators, teachers, and students to interact with academic data efficiently.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+### For Administrators
+- **Student Management**: Add, edit, delete, and view student profiles
+- **Course Management**: Create and manage courses, subjects, and curricula
+- **Teacher Management**: Manage teacher accounts and assignments
+- **Reports & Analytics**: Generate detailed reports on student performance
+- **User Role Management**: Control access levels for different user types
+<img width="1920" height="1008" alt="Screenshot 2025-07-22 110639" src="https://github.com/user-attachments/assets/e4a73a25-8dd9-410d-90fb-833c88bfadfe" />
 
-### `npm start`
+### For Teachers
+- **Grade Management**: Input and update student grades and assessments
+- **Attendance Tracking**: Mark and monitor student attendance
+- **Course Content**: Upload and manage course materials
+- **Student Progress**: Track individual student performance
+- **Class Scheduling**: View and manage class timetables
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### For Students
+- **Profile Management**: View and update personal information
+- **Grade Viewing**: Check current grades and academic progress
+- **Course Enrollment**: Register for available courses
+- **Attendance History**: View attendance records
+- **Academic Calendar**: Access important dates and schedules
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Technology Stack
 
-### `npm test`
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+- **Backend**: Node.js with Express.js
+- **Database**: MongoDB with Mongoose ODM
+- **Authentication**: JWT (JSON Web Tokens)
+- **Styling**: Bootstrap 5
+- **File Upload**: Multer for handling file uploads
+- **PDF Generation**: jsPDF for report generation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Prerequisites
 
-### `npm run build`
+Before running this application, ensure you have the following installed:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Node.js (v14.0.0 or higher)
+- MongoDB (v4.4 or higher)
+- npm or yarn package manager
+- Git
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Installation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/student-management-system.git
+   cd student-management-system
+   ```
 
-### `npm run eject`
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. **Set up environment variables**
+   Create a `.env` file in the root directory:
+   ```env
+   PORT=3000
+   MONGODB_URI=mongodb://localhost:27017/student_management
+   JWT_SECRET=your_jwt_secret_key_here
+   JWT_EXPIRES_IN=7d
+   NODE_ENV=development
+   UPLOAD_PATH=./uploads
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. **Start MongoDB service**
+   ```bash
+   # On Windows
+   net start MongoDB
+   
+   # On macOS/Linux
+   sudo systemctl start mongod
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+5. **Run the application**
+   ```bash
+   # Development mode
+   npm run dev
+   
+   # Production mode
+   npm start
+   ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+6. **Access the application**
+   Open your browser and navigate to `http://localhost:3000`
 
-## Learn More
+## Project Structure
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+student-management-system/
+├── config/
+│   ├── database.js
+│   └── auth.js
+├── controllers/
+│   ├── authController.js
+│   ├── studentController.js
+│   ├── teacherController.js
+│   └── courseController.js
+├── middleware/
+│   ├── auth.js
+│   ├── validation.js
+│   └── upload.js
+├── models/
+│   ├── User.js
+│   ├── Student.js
+│   ├── Teacher.js
+│   ├── Course.js
+│   └── Grade.js
+├── routes/
+│   ├── auth.js
+│   ├── students.js
+│   ├── teachers.js
+│   └── courses.js
+├── views/
+│   ├── layouts/
+│   ├── partials/
+│   └── pages/
+├── public/
+│   ├── css/
+│   ├── js/
+│   └── images/
+├── uploads/
+├── tests/
+├── .env
+├── .gitignore
+├── package.json
+└── server.js
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## API Endpoints
 
-### Code Splitting
+### Authentication
+- `POST /api/auth/login` - User login
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/logout` - User logout
+- `GET /api/auth/profile` - Get user profile
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Students
+- `GET /api/students` - Get all students
+- `GET /api/students/:id` - Get student by ID
+- `POST /api/students` - Create new student
+- `PUT /api/students/:id` - Update student
+- `DELETE /api/students/:id` - Delete student
 
-### Analyzing the Bundle Size
+### Courses
+- `GET /api/courses` - Get all courses
+- `GET /api/courses/:id` - Get course by ID
+- `POST /api/courses` - Create new course
+- `PUT /api/courses/:id` - Update course
+- `DELETE /api/courses/:id` - Delete course
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Grades
+- `GET /api/grades/student/:id` - Get grades for a student
+- `POST /api/grades` - Add new grade
+- `PUT /api/grades/:id` - Update grade
+- `DELETE /api/grades/:id` - Delete grade
 
-### Making a Progressive Web App
+## Usage
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Default Admin Account
+After initial setup, you can log in with:
+- **Username**: admin@school.edu
+- **Password**: admin123
 
-### Advanced Configuration
+### Adding Students
+1. Log in as an administrator
+2. Navigate to "Students" section
+3. Click "Add New Student"
+4. Fill in the required information
+5. Submit the form
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Managing Courses
+1. Access the "Courses" section
+2. Create new courses with course codes, names, and credits
+3. Assign teachers to courses
+4. Set enrollment limits and prerequisites
 
-### Deployment
+### Recording Grades
+1. Teachers can access their assigned courses
+2. Select a course and view enrolled students
+3. Input grades for assignments, exams, and projects
+4. Grades are automatically calculated and saved
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Testing
 
-### `npm run build` fails to minify
+Run the test suite:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```bash
+# Run all tests
+npm test
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run tests in watch mode
+npm run test:watch
+```
+
+## Deployment
+
+### Using Docker
+
+1. **Build the Docker image**
+   ```bash
+   docker build -t student-management-system .
+   ```
+
+2. **Run with Docker Compose**
+   ```bash
+   docker-compose up -d
+   ```
+
+### Manual Deployment
+
+1. **Set environment to production**
+   ```bash
+   export NODE_ENV=production
+   ```
+
+2. **Build the application**
+   ```bash
+   npm run build
+   ```
+
+3. **Start the server**
+   ```bash
+   npm start
+   ```
+
+## Security Features
+
+- Password hashing using bcrypt
+- JWT-based authentication
+- Input validation and sanitization
+- CORS protection
+- Rate limiting
+- File upload restrictions
+- SQL injection prevention
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+
+
+## Support
+
+For support and questions:
+
+- **Email**: adityamohite4973@gmail.com
+
+## Changelog
+
+### Version 2.1.0
+- Added bulk import functionality for students
+- Improved grade calculation algorithms
+- Enhanced reporting features
+
+### Version 2.0.0
+- Complete UI/UX redesign
+- Added mobile responsive design
+- Implemented real-time notifications
+- Added backup and restore functionality
+
+### Version 1.0.0
+- Initial release
+- Basic student, teacher, and course management
+- Grade tracking and reporting
+
+## Acknowledgments
+
+- Bootstrap team for the UI framework
+- MongoDB team for the database solution
+- Express.js community for the web framework
+- All contributors who have helped improve this project
